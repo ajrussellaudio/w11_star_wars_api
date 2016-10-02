@@ -23,7 +23,7 @@ var addPerson = function( person ) {
   var name = createH3( "Name", person );
   var height = createPTag( "Height", person.height );
   // var homeworld = createPTag( "Homeworld", person.homeworld );
-  appendPerson( [ name, height, homeworld ] )
+  appendPerson( [ name, height ] )
 }
 
 var addPeople = function( people ) {
