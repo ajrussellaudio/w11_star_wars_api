@@ -1,8 +1,48 @@
+var people = [];
+
+var appendPerson = function( things ) {
+  var target = document.querySelector("#content");
+  things.forEach( function(item) {
+    target.appendChild(item);
+  })
+}
+
+var createH3 = function( tag, person ) {
+  var h3 = document.createElement('h3');
+  h3.innerText = tag + ": " + person.name;
+  return h3;
+}
+
+var createPTag = function( tag, attribute ) {
+  var pTag = document.createElement('p');
+  pTag.innerText = tag + ": " + attribute;
+  return pTag;
+}
+
+var addPerson = function( person ) {
+  var name = createH3( "Name", person );
+  var height = createPTag( "Height", person.height );
+  var homeworld = createPTag( "Homeworld", person.homeworld );
+  // var homeworld = createPTag( "Homeworld", person );
+  appendPerson( [ name, height, homeworld ] )
+}
+
+var addPeople = function( people ) {
+  people.forEach( function( person ) {
+    addPerson( person )
+  });
+}
+
 var requestComplete = function() {
   if( this.status !== 200 ) return;
   var jsonString = this.responseText;
-  var starshipsJSON = JSON.parse( jsonString );
-  console.log( starshipsJSON );
+  var response = JSON.parse( jsonString );
+  if( response.next ) makeRequest( response.next, requestComplete );
+  var people = response.results.map( function( params ) {
+    console.log(params);
+    return new Person(params);
+  });
+  addPeople( people );
 }
 
 var makeRequest = function( url, callback ) {
@@ -12,9 +52,9 @@ var makeRequest = function( url, callback ) {
   request.send();
 }
 
-var getShips = function() {
-  var url = "https://swapi.co/api/starships";
+var getData = function() {
+  var url = "http://swapi.co/api/people/";
   makeRequest( url, requestComplete );
 }
 
-window.onload = getShips;
+window.onload = getData;
