@@ -22,8 +22,10 @@ var createPTag = function( tag, attribute ) {
 var addPerson = function( person ) {
   var name = createH3( "Name", person );
   var height = createPTag( "Height", person.height );
+  var weight = createPTag( "Weight", person.mass );
+  var bmi = createPTag( "BMI", person.bmi() );
   // var homeworld = createPTag( "Homeworld", person.homeworld );
-  appendPerson( [ name, height ] )
+  appendPerson( [ name, height, weight, bmi ] )
 }
 
 var addPeople = function( people ) {
@@ -38,7 +40,7 @@ var requestComplete = function() {
   var response = JSON.parse( jsonString );
   if( response.next ) makeRequest( response.next, requestComplete );
   var people = response.results.map( function( params ) {
-    console.log(params);
+    // console.log(params);
     return new Person(params);
   });
   addPeople( people );
